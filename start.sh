@@ -1,26 +1,5 @@
 #!/bin/bash
 set -e
-
-echo "[INFO] ??????..."
 cd /app
-python -c "
-from app import app, db
-with app.app_context():
-    db.create_all()
-    print('[INFO] ??????')
-"
-
-echo "[INFO] ??????..."
-python -c "
-from app import app, db, Disease
-with app.app_context():
-    if not Disease.query.first():
-        from init_data import insert_disease_data
-        insert_disease_data()
-        print('[INFO] ???????')
-    else:
-        print('[INFO] ??????????')
-"
-
-echo "[INFO] ?? Flask ??..."
+echo "[INFO] Starting app..."
 python app.py
