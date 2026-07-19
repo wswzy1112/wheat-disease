@@ -1,0 +1,57 @@
+﻿# .gitignore
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+*.egg
+.eggs/
+
+# Environment
+.env
+*.env.local
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Uploads (user-uploaded content)
+static/uploads/*
+!static/uploads/.gitkeep
+
+# Model files (large binary files)
+*.pth
+*.pt
+!model/model/cnn_model.pth
+
+# Node
+node_modules/
+wheat-frontend/node_modules/
+wheat-frontend/dist/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+dev_server.log
+
+# Temp
+temp_*.py
+write_app.py
+fix_vue*.py
+
+# Model training data (not needed for deployment)
+model/data/
+
+# Unused scripts
+mysql.py
+text.py
+绘图.py
+package.json
+package-lock.json
