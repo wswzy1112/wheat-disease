@@ -50,8 +50,8 @@ fix_vue*.py
 model/data/
 
 # Unused scripts
-mysql.py
-text.py
-绘图.py
-package.json
-package-lock.json
+/mysql.py
+/text.py
+/绘图.py
+/package.json
+/package-lock.json
