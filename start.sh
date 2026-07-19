@@ -3,7 +3,7 @@ set -e
 
 echo "[INFO] ??????..."
 cd /app
-python3 -c "
+python -c "
 from app import app, db
 with app.app_context():
     db.create_all()
@@ -11,7 +11,7 @@ with app.app_context():
 "
 
 echo "[INFO] ??????..."
-python3 -c "
+python -c "
 from app import app, db, Disease
 with app.app_context():
     if not Disease.query.first():
@@ -23,4 +23,4 @@ with app.app_context():
 "
 
 echo "[INFO] ?? Flask ??..."
-python3 app.py
+python app.py

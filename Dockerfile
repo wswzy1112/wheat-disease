@@ -14,15 +14,11 @@ RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash -
 RUN apt-get install -y nodejs
 RUN cd wheat-frontend && npm install && npm run build
 
-RUN mkdir -p /data/uploads
 
-ENV PORT=7860
-ENV DATABASE_URL=sqlite:////data/database.db
-ENV UPLOAD_FOLDER=/data/uploads
 ENV FLASK_ENV=production
-ENV SECRET_KEY=please-change-me-in-production
+ENV PORT=5000
 
-EXPOSE 7860
+# Railway auto-assigns PORT env
 
 COPY start.sh /start.sh
 RUN chmod +x /start.sh
