@@ -106,7 +106,7 @@ FRONTEND_DIR = os.environ.get('FRONTEND_DIR', os.path.join(BASE, 'wheat-frontend
 print(f'[INFO] 加载模型: {MODEL_PATH}')
 import torch; from torchvision import transforms
 if not os.path.exists(MODEL_PATH): raise FileNotFoundError(f'模型文件不存在: {MODEL_PATH}')
-model = torch.load(MODEL_PATH, map_location='cpu'); model.eval()
+model = torch.load(MODEL_PATH, map_location='cpu', weights_only=False); model.eval()
 with open(LABEL_PATH, encoding='utf-8') as f: labels = json_mod.load(f)
 transform = transforms.Compose([transforms.Resize((160,160)), transforms.ToTensor()])
 E2C = {"Aphid":"蚜虫","Black Rust":"黑锈病","Blast":"稻瘟病","Brown Rust":"褐锈病","Common Root Rot":"普通根腐病","Fusarium Head Blight":"赤霉病","Healthy":"健康","Leaf Blight":"叶枯病","Mildew":"白粉病","Mite":"螨虫害","Septoria":"壳针孢病","Smut":"黑粉病","Stem fly":"秆蝇虫害","Tan spot":"褐斑病","Yellow Rust":"黄锈病"}
