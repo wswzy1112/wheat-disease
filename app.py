@@ -16,7 +16,7 @@ import re
 import json as json_mod
 from functools import wraps
 from dotenv import load_dotenv
-
+from PIL import Image
 load_dotenv()
 app = Flask(__name__)
 
