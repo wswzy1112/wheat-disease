@@ -232,7 +232,31 @@ def e429(e): return jsonify({'success':False,'msg':'请求过于频繁'}),429
 def e500(e): db.session.rollback(); return jsonify({'success':False,'msg':'服务器内部错误'}),500
 
 if __name__ == '__main__':
-    with app.app_context(): db.create_all(); print('[INFO] 数据库表已就绪')
+    with app.app_context():
+        db.create_all()
+        disease_data = [
+            ("Aphid", "喷洒吡虫啉等低毒杀虫剂，及时清除虫源；种植抗蚜品种。"),
+            ("Black Rust", "可使用三唑类杀菌剂如戊唑醇，注意轮作换茬。"),
+            ("Blast", "改善田间通风透光，使用稻瘟灵、三环唑等杀菌剂。"),
+            ("Brown Rust", "喷洒烯唑醇，清除病株，减少田间湿度。"),
+            ("Common Root Rot", "合理轮作，清除病残体，可用多菌灵处理种子。"),
+            ("Fusarium Head Blight", "开花期避免浇水，喷洒多菌灵、福美双等。"),
+            ("Healthy", "无明显病虫害，注意田间管理，保持作物健康。"),
+            ("Leaf Blight", "喷洒代森锰锌、甲基托布津，注意通风。"),
+            ("Mildew", "用三唑酮、粉锈宁等，控制温湿度，增强作物抗性。"),
+            ("Mite", "喷施阿维菌素，减少杂草虫源，合理密植。"),
+            ("Septoria", "及时清除病叶，施用苯醚甲环唑类药物控制扩散。"),
+            ("Smut", "播种前种子拌种处理，避免高温高湿环境。"),
+            ("Stem fly", "播种前处理种子，苗期喷施杀虫剂如辛硫磷。"),
+            ("Tan spot", "适当轮作，施用叶面杀菌剂如多菌灵防治。"),
+            ("Yellow Rust", "用烯唑醇、戊唑醇防治，加强巡查及时发现。")
+        ]
+        for name, suggestion in disease_data:
+            if not Disease.query.filter_by(name=name).first():
+                db.session.add(Disease(name=name, suggestion=suggestion))
+        db.session.commit()
+        print('[INFO] 病虫害防治数据已导入')
+        print('[INFO] 数据库表已就绪')
     debug = os.environ.get('FLASK_ENV') == 'development'
     port = int(os.environ.get('PORT', 5000))
     print(f'[INFO] 启动 http://0.0.0.0:{port} | 环境: {"开发" if debug else "生产"}')
