@@ -189,7 +189,7 @@ def get_records(u):
     return jsonify({'records':items,'total':p.total,'page':pg,'limit':lim})
 
 @app.route('/api/diseases', methods=['GET'])
-def diseases(): return jsonify([{'id':d.id,'name':d.name,'suggestion':d.suggestion} for d in Disease.query.all()])
+def diseases(): return jsonify([{'id':d.id,'name':E2C.get(d.name,d.name),'suggestion':d.suggestion} for d in Disease.query.all()])
 
 @app.route('/api/user/profile', methods=['GET'])
 @login_required
