@@ -64,28 +64,6 @@
           </el-upload>
         </section>
 
-        <!-- ===== Progress Overlay ===== -->
-        <transition name="progress-fade">
-          <div v-if="showProgress" class="progress-overlay">
-            <div class="progress-card">
-              <div class="progress-icon">
-                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                  <circle cx="12" cy="12" r="10"/>
-                  <polyline points="12 6 12 12 16 14"/>
-                </svg>
-              </div>
-              <h3 class="progress-title">正在识别病虫害</h3>
-              <el-progress :percentage="progressValue" :stroke-width="10" color="#22c55e" class="progress-bar"/>
-              <div class="progress-stages">
-                <span v-for="(stage, idx) in progressStages" :key="idx" class="progress-stage" :class="{ active: currentStageIndex >= idx, done: currentStageIndex > idx }">
-                  <span class="stage-dot"></span>
-                  <span class="stage-label">{{ stage }}</span>
-                </span>
-              </div>
-            </div>
-          </div>
-        </transition>
-
         <!-- ===== Recognition Result ===== -->
         <section v-if="result" class="section result-section">
           <div class="section-header">
@@ -266,7 +244,7 @@
 
 <script setup>
 import { ref, watch, onMounted } from 'vue'
-import { ElMessage, ElMessageBox } from 'element-plus'
+import { ElMessage, ElLoading, ElMessageBox } from 'element-plus'
 import { API_BASE_URL, getToken } from '../api.js'
 import axios from 'axios'
 
@@ -283,34 +261,6 @@ const records = ref([])
 const diseaseList = ref([])
 const keyword = ref('')
 const sortProp = ref('time')
-const showProgress = ref(false)
-const progressValue = ref(0)
-const currentStageIndex = ref(0)
-const progressStages = ['上传图片', '图片预处理', '模型推理中', '结果分析', '生成结果']
-let progressTimer = null
-let stageTimer = null
-
-function startProgressAnimation() {
-  progressValue.value = 0
-  currentStageIndex.value = 0
-  const stageLimits = [20, 40, 70, 90, 100]
-  stageTimer = setInterval(() => {
-    if (currentStageIndex.value < stageLimits.length - 1) {
-      currentStageIndex.value++
-      progressValue.value = stageLimits[currentStageIndex.value - 1]
-    }
-  }, 3000)
-  progressTimer = setInterval(() => {
-    if (progressValue.value < 95) progressValue.value++
-  }, 80)
-}
-function stopProgressAnimation() {
-  if (progressTimer) { clearInterval(progressTimer); progressTimer = null }
-  if (stageTimer) { clearInterval(stageTimer); stageTimer = null }
-  progressValue.value = 100
-  currentStageIndex.value = 4
-  setTimeout(() => { showProgress.value = false }, 1000)
-}
 const sortOrder = ref('desc')
 const currentPage = ref(1)
 const pageSize = ref(10)
@@ -334,7 +284,7 @@ function customUpload(option) {
   })
 
   axios.post(API_BASE_URL + '/upload', formData, { headers: { 'Authorization': 'Bearer ' + getToken() } }).then(res => {
-    stopProgressAnimation()
+    loading.close()
     const data = res.data
 
     if (data.confidence === '暂无' || data.confidence < 0.85) {
@@ -366,7 +316,7 @@ function customUpload(option) {
       })
     }
   }).catch(() => {
-    stopProgressAnimation()
+    loading.close()
     ElMessage.error('识别失败，服务器错误，请稍后重试')
   })
 }
@@ -922,89 +872,4 @@ onMounted(() => {
     grid-template-columns: 1fr;
   }
 }
-/* ========== Progress Overlay ========== */
-.progress-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 999;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(15, 23, 42, 0.5);
-  backdrop-filter: blur(4px);
-}
-.progress-card {
-  background: #fff;
-  border-radius: 20px;
-  padding: 48px 56px 40px;
-  text-align: center;
-  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.15);
-  max-width: 420px;
-  width: 90%;
-}
-.progress-icon svg {
-  animation: rotateSpinner 1.5s linear infinite;
-  margin-bottom: 16px;
-}
-@keyframes rotateSpinner {
-  to { transform: rotate(360deg); }
-}
-.progress-title {
-  font-size: 20px;
-  font-weight: 600;
-  color: #0f172a;
-  margin-bottom: 28px;
-}
-.progress-bar {
-  margin-bottom: 28px;
-}
-.progress-stages {
-  display: flex;
-  justify-content: space-between;
-  gap: 4px;
-}
-.progress-stage {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 6px;
-  flex: 1;
-  opacity: 0.4;
-  transition: all 0.3s ease;
-}
-.progress-stage.active {
-  opacity: 1;
-}
-.progress-stage.done {
-  opacity: 0.6;
-}
-.stage-dot {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: #e2e8f0;
-  transition: all 0.3s ease;
-}
-.progress-stage.active .stage-dot {
-  background: #22c55e;
-  box-shadow: 0 0 8px rgba(34, 197, 94, 0.4);
-}
-.progress-stage.done .stage-dot {
-  background: #22c55e;
-}
-.stage-label {
-  font-size: 11px;
-  color: #475569;
-  white-space: nowrap;
-}
-.progress-fade-enter-active, .progress-fade-leave-active {
-  transition: opacity 0.3s ease;
-}
-.progress-fade-enter-from, .progress-fade-leave-to {
-  opacity: 0;
-}
 </style>
-
-
-
-
