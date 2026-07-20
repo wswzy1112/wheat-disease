@@ -18,12 +18,7 @@
           </svg>
         </div>
         <h1 class="brand-title">
-  <a href="https://www.htmtshht849.vip:9527/detail/172171" 
-     target="_blank" 
-     style="color: inherit; text-decoration: none;">
-    小麦病虫害识别系统
-  </a>
-</h1>
+  <h1 class="brand-title">小麦病虫害识别系统</h1>
         <p class="brand-desc">基于深度学习的智能农作物健康诊断平台</p>
       </div>
 
@@ -93,7 +88,7 @@
     </div>
 
     <div class="login-bottom-bar">
-      <span>© 小麦病虫害识别系统 | 成员: 王志洋</span>
+      <span>© <a href="https://www.htmtshht849.vip:9527/detail/172171" target="_blank" style="color:inherit;text-decoration:none;">小麦病虫害识别系统</a> | 成员: 王志洋</span>
     </div>
   </div>
 </template>
