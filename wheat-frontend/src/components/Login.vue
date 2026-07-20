@@ -87,7 +87,7 @@
     </div>
 
     <div class="login-bottom-bar">
-      <span>© <a href="https://www.htmtshht849.vip:9527/detail/172171" target="_blank" style="color:inherit;text-decoration:none;">小麦病虫害识别系统</a> | 成员: 王志洋</span>
+      <span>© 小麦病虫害识别系统 | 成员: <a href="https://www.htmtshht849.vip:9527/detail/172171" target="_blank" style="color:inherit;text-decoration:none;">王志洋</a></span>
     </div>
   </div>
 </template>
